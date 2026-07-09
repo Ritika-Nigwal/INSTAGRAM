@@ -18,7 +18,7 @@ app.mount("/images",StaticFiles(directory="images"),name="images")
 def root():
     return {"message": "Vande Mataram"}
 
-origins = ["http://localhost:5173", "http://localhost:3000","http://127.0.0.1:5173","https://instagram-inky-phi.vercel.app","https://instagram-98oyrmndy-parisramnigwal-5516s-projects.vercel.app/"]
+origins = ["http://localhost:5173", "http://localhost:3000","http://127.0.0.1:5173","https://instagram-gin1.vercel.app"]
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
