@@ -1,0 +1,35 @@
+@import "tailwindcss";
+
+.gradientText {
+  background: linear-gradient(to right, #ec1919, #9402fc); /* red → blue */
+  -webkit-background-clip: text; /* Safari/Chrome ke liye */
+  background-clip: text; /* Standard property for modern browsers */
+  -webkit-text-fill-color: transparent; /* text ko transparent banata hai */
+  color: transparent; /* Standard property for text color */
+}
+.alignment{
+    display:flex;
+}
+
+.image:hover{
+    transform:rotate(-10deg) scale(1.5);
+    z-index:5;
+    
+}
+/* .formText{
+    font-size:1.2em;
+} */
+@media (max-width:1056px){
+.alignment{
+    display:flex;
+    flex-direction:column;
+    margin:4em 0em;
+}
+.LoginImages{
+    display:none;
+}
+.formText{
+    font-size:1.4em;
+    margin:4em 0em;
+}
+}

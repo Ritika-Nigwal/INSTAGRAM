@@ -1,0 +1,30 @@
+# Python cache
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Virtual environment
+env/
+venv/
+.venv/
+
+# Environment variables
+.env*
+
+# Database files (agar SQLite use kar rahi ho)
+*.db
+*.sqlite3
+
+# Logs
+*.log
+
+# IDE/Editor settings
+.vscode/
+.idea/
+
+# OS specific
+.DS_Store
+Thumbs.db
+
+# Migrations (agar tum alembic use kar rahi ho aur auto-generate karna hai)
+migrations/versions/*.py
