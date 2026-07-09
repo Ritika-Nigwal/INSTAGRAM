@@ -12,7 +12,7 @@ def sendEmail(request:dict,message:str):
     PORT=587
     email=EmailMessage()
     email["to"]=request['email']
-    email["from"]="Instagram"
+    email["from"]="parisramnigwal@gmail.com"
     email["subject"]="Welcome to instagram community."
     email.set_content(content.substitute({"username":request["username"],"message":message,"email":request["email"]}),"html")
     server=smtplib.SMTP(HOST,PORT)
