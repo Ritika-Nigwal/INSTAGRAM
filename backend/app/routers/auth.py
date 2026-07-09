@@ -29,9 +29,9 @@ def login(
             detail="Invalid username or password",
             headers={"WWW-Authenticate": "Bearer"},
         )
-    success=sendEmail({"username":user.username,"email":user.email},"loginned successfully!!")
-    if not success:
-        raise HTTPException(status_code=status.HTTP_501_NOT_IMPLEMENTED,detail=success);
+    # success=sendEmail({"username":user.username,"email":user.email},"loginned successfully!!")
+    # if not success:
+    #     raise HTTPException(status_code=status.HTTP_501_NOT_IMPLEMENTED,detail=success);
     access_token = create_access_token(data={"username": user.username})
 
     return {

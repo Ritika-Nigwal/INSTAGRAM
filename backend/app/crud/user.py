@@ -17,9 +17,9 @@ def create_user(db: Session, request: UserCreate):
         raise HTTPException(status_code=status.HTTP_409_CONFLICT,detail="username or email already exists")
     if not new_user:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,detail="Unprocessable content..")
-    success=sendEmail({"username":request.username,"email":request.email},"user created successFully !!!!")
-    if not success:
-        raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_CONTENT,detail="Please enter VAlid email...")
+    # success=sendEmail({"username":request.username,"email":request.email},"user created successFully !!!!")
+    # if not success:
+    #     raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_CONTENT,detail="Please enter VAlid email...")
     db.add(new_user)
     db.commit()
     db.refresh(new_user)
