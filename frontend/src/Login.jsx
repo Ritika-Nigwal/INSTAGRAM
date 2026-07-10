@@ -57,13 +57,13 @@ const Login = () => {
   }
   return (
     <>
-      <div className="alignment">
+      <div className="alignment p-2 ">
         <div className="layout flex flex-col">
           <img src={Insta} className="sm:h-30 sm:w-30 sm:p-2 h-20 w-20 p-2" />
-          <p className="sm:text-4xl font-serif sm:pl-20 whitespace-nowrap sm:m-1 text-2xl pl-5 m-1">
+          <p className="sm:text-4xl font-serif sm:pl-20 whitespace-nowrap sm:m-1 text-xl pl-5 m-1">
             See everyday moments from your
           </p>
-          <p className="gradientText sm:text-6xl sm:font-medium font-serif sm:ml-20 text-4xl ml-5">
+          <p className="gradientText sm:text-6xl sm:font-medium font-serif sm:ml-20 text-4xl ml-6">
             close friends
           </p>
           <div
@@ -86,7 +86,7 @@ const Login = () => {
         </div>
         <div className="sm:mx-50 sm:mt-20 p-4 mt-20 flex flex-col justify-center items-center">
           <form onSubmit={login} className="flex flex-col ">
-            <p className="sm:text-4xl sm:ml-1 mb-4 text-2xl gradientText font-sans sm:mb-2 ">
+            <p className="sm:text-4xl pl-4 pb-4 sm:ml-1  text-2xl  font-serif sm:mb-2 ">
               Login to Instagram Account
             </p>
             <input
@@ -115,14 +115,14 @@ const Login = () => {
               className="border-2  border-gray-500 p-2 text-2 rounded-xl sm:p-5 w-80 m-3 sm:text-[1em] text-gray-600 sm:rounded-2xl sm:w-[25em]  sm:m-5"
             />
             <p
-              className="sm:text-[18px] text-blue-600 sm:ml-[1em] sm:pl-[1em]"
+              className="sm:text-[18px] ml-6 text-blue-600 sm:ml-[1em] sm:pl-[1em]"
               onClick={() => setFlag2(!flag2)}
             >
               create a new account
             </p>
 
             <br />
-            <div>
+            <div className="ml-4 sm:ml-0">
               {" "}
               <button
                 onClick={() => {
@@ -175,9 +175,9 @@ const Login = () => {
         </div>
       </div>
       {loading && (
-        <div className="fixed inset-0 bg-[#ffffff9e] ">
-          <div className="sm:mt-100 mt-40 ml-20 sm:ml-190">
-            <Spin size="large" tip="Loading..." />
+        <div className="fixed inset-0 bg-[#121111ba] ">
+          <div className="sm:mt-80 mt-75 ml-36 inline-block sm:ml-180 ">
+            <Spin size="large" tip="Loading..." style={{color:"skyblue"}} />
           </div>
         </div>
       )}

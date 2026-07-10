@@ -4,12 +4,16 @@ import Image3 from "../assets/delete.png";
 import Insta from "../assets/Insta.webp";
 import { deleteComment } from "../Services/deleteComment";
 import OtherProfile from "../OtherProfile";
-import ReactDOM from "react-dom"
+import ReactDOM from "react-dom";
+import { getPost } from "../Services/getPosts";
+import DeleteModal from "../Modals/DeleteModal";
 const Posts = (props) => {
   const [comment, setComment] = useState("");
   const [commentList, setCommentList] = useState(props.comments || []);
-  const [flag,setFlag]=useState(false)
-  // styling="sm:h-16 h-14 w-14  sm:w-16  rounded-full my-1"
+  const [flag, setFlag] = useState(false);
+  const user = JSON.parse(localStorage.getItem("user"));
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [commentToDelete, setCommentToDelete] = useState(null);
   const fetchRefresh = () => {
     setCommentList(props.comments);
   };
@@ -17,8 +21,25 @@ const Posts = (props) => {
     fetchRefresh();
   }, [props.comments]);
   console.log(props.id);
+  const onConfirm = async () => {
+    {
+      if (!commentToDelete) return;
+      await deleteComment(commentToDelete);
+      setCommentList((prev) => prev.filter((c) => c.id !== commentToDelete));
+      setShowDeleteModal(false);
+      setCommentToDelete(null);
+      try {
+        getPost(user.access_token);
+      } catch (e) {
+        console.error(e);
+      }
+    }
+  };
+  const onCloseDelete = () => {
+    setShowDeleteModal(false);
+    setCommentToDelete(null);
+  };
   const createComment = async (e) => {
-    const user = JSON.parse(localStorage.getItem("user"));
     const postComment = await fetch(
       `${import.meta.env.VITE_API_URL}/comments/`,
       {
@@ -36,25 +57,30 @@ const Posts = (props) => {
   };
   return (
     <>
-
       <span className="flex flex-col  ml-2 sm:m-20 sm:my-10 sm:justify-evenly">
-        <span className="flex h-20 gap-4 sm:gap-10 w-65 bg-[#f7f6f6] border-t-4 border-t-gray-300  sm:w-130">
+        <span className="flex h-20 gap-4 sm:gap-10 w-75 bg-[#f7f6f6] border-t-4 border-t-gray-300  sm:w-130">
           <img
             src={props.profile}
-            className="sm:h-16 h-14 w-14 cursor-pointer  sm:w-16  rounded-full my-1"
-            onClick={()=>setFlag(true)}
+            className="sm:h-16 h-16 w-16 cursor-pointer  sm:w-16  rounded-full my-1"
+            onClick={() => setFlag(true)}
           />
-          <h1 className="pt-5 cursor-pointer text-[14px] text-indigo-800 sm:text-2xl whitespace-nowrap "  onClick={()=>{props.onClose(true);
-              props.setId(props.user_id)
-            }
-            }>
-            user : {props.name} ..........
+          <h1
+            className="pt-5 cursor-pointer font-serif text-xl gradientText sm:text-2xl whitespace-nowrap "
+            onClick={() => {
+              props.onClose(true);
+              props.setId(props.user_id);
+            }}
+          >
+            User : {props.name} ..........
           </h1>
-          <img src={Insta} className=" hidden w-10 h-10 mt-2 sm:mt-4  sm:block md:block " />
+          <img
+            src={Insta}
+            className=" hidden w-10 h-10 mt-2 sm:mt-4  sm:block md:block "
+          />
         </span>
         <img
           src={props.post}
-          className="h-80 w-65 sm:h-150 sm:w-130 sm:p-1 bg-blue-100 "
+          className="h-120 w-75 sm:h-150 sm:w-130 sm:p-1 bg-blue-100 "
         />
         <p className="sm:text-2xl font-serif text-purple-950">Comments</p>
         <div className="bg-gray-300 h-15 my-1 rounded-xl sm:h-25 sm:rounded-3xl flex flex-col gap-2 overflow-auto align-middle">
@@ -64,7 +90,8 @@ const Posts = (props) => {
                 {comment.text}
                 <button
                   onClick={() => {
-                    deleteComment(comment.id);
+                    setCommentToDelete(comment.id);
+                    setShowDeleteModal(true);
                   }}
                 >
                   <img src={Image3} className="h-6 m-1"></img>
@@ -85,12 +112,30 @@ const Posts = (props) => {
         >
           send
         </button>
+
+        {showDeleteModal &&
+          ReactDOM.createPortal(
+            <DeleteModal
+              isOpen={showDeleteModal}
+              onClose={onCloseDelete}
+              onConfirm={onConfirm}
+            />,
+            document.getElementById("modal"),
+          )}
       </span>
-      {flag && ReactDOM.createPortal(<div className="fixed inset-0 bg-[#ffffffce]">
-        <div className="absolute sm:left-140 left-20 top-50 sm:top-50 ">
-          <img src={props.profile} className="sm:left-20 h-40 w-40 shadow-2xl rounded-full sm:h-100 sm:w-100" onClick={()=>setFlag(false)}/>
-        </div>
-      </div>,document.getElementById("modal"))}
+      {flag &&
+        ReactDOM.createPortal(
+          <div className="fixed inset-0 bg-[#ffffffce]">
+            <div className="absolute h-30 w-80 sm:left-150 left-20 top-50 sm:top-50 ">
+              <img
+                src={props.profile}
+                className="sm:left-20 h-40 w-40 shadow-2xl rounded-full sm:h-100 sm:w-100"
+                onClick={() => setFlag(false)}
+              />
+            </div>
+          </div>,
+          document.getElementById("modal"),
+        )}
     </>
   );
 };

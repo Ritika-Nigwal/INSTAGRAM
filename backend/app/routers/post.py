@@ -48,11 +48,10 @@ def getCurrentUserPost(id:int,db:Session=Depends(get_db),user:UserResponse=Depen
 @router.delete("/{post_id}")
 def delete_existing_post(
     post_id: int,
-    user_id: int,
     db: Session = Depends(get_db),
     current_user: UserResponse = Depends(get_current_user),
 ):
-    result = delete_post(db=db, post_id=post_id, user_id=user_id)
+    result = delete_post(db=db, post_id=post_id, user_id=current_user.id)
 
     if result is None:
         raise HTTPException(

@@ -6,26 +6,32 @@ import { update_user } from "./Services/register";
 import { uploadFile } from "./Services/uploadImage";
 import { getCurrentUser } from "./Services/getUser";
 import ExpireModal from "./Modals/ExpireModal";
+import { Spin } from "antd";
 const Register = () => {
   const [userInfo, setUserInfo] = useState({});
   const [user_post, setUserPost] = useState([]);
   const [flag, setFlag] = useState(false);
-  const [showProfile,setShowProfile] = useState(false);
+  const [showProfile, setShowProfile] = useState(false);
   const [image, setImage] = useState();
   const [bio, setBio] = useState();
   const [expire, setExpire] = useState(false);
+  const [loading, setLoading] = useState(true);
   const user = JSON.parse(localStorage.getItem("user"));
   const fetchUserInfo = async () => {
     if (user) {
       const Userdata = await getCurrentUser(user.user_id);
       if (Userdata === 401) {
         setExpire(true);
+        setLoading(false);
       }
+      setLoading(false);
       setUserInfo(Userdata);
     } else {
       setExpire(true);
+      setLoading(false);
     }
   };
+
   const fetchUser = async () => {
     if (user) {
       const data = await get_post(user.access_token, user.user_id);
@@ -77,12 +83,12 @@ const Register = () => {
           }}
           className=""
         >
-          <div className="h-40 p-2 items-center ml-8 mt-10 flex justify-between bg-[linear-gradient(135deg,#52c2eef0,rgb(100,320,320),rgb(200,400,200))] sm:h-70 rounded-xl sm:p-10 ">
+          <div className="h-40 p-2 items-center ml-4 w-78 sm:w-280 mt-10 flex justify-between bg-[linear-gradient(135deg,#52c2eef0,rgb(100,320,320),rgb(200,400,200))] sm:h-70 rounded-xl sm:p-10 ">
             <div className="">
               <img
                 className="h-14 w-16 sm:w-30  sm:h-30 text-[#52c2eef0] cursor-pointer rounded-full border-2 border-amber-50"
                 src={`${import.meta.env.VITE_API_URL}/${userInfo.profile}`}
-                onClick={()=>setShowProfile(true)}
+                onClick={() => setShowProfile(true)}
               />
               <p className="ml-2 mt-2 text-l sm:text-2xl sm:my-4  font-serif">
                 {userInfo.username}
@@ -99,10 +105,12 @@ const Register = () => {
           <div className="ml-10 sm:my-10 sm:text-3xl font-medium font-[cursive] underline">
             All Posts
           </div>
-          <div className=" ml-8 flex flex-wrap justify-start">
+          <div className=" ml-4 flex flex-wrap justify-start">
             {user_post.map((user) => (
               <UserPosts
                 key={user.id}
+                id={user.id}
+                isYou={true}
                 post={`${import.meta.env.VITE_API_URL}/${user.image_url}`}
               />
             ))}
@@ -162,6 +170,13 @@ const Register = () => {
           </div>,
           document.getElementById("modal"),
         )}
+      {loading && (
+        <div className="fixed inset-0 bg-[#121111ba] ">
+          <div className="sm:mt-80 mt-75 ml-36 inline-block sm:ml-180 ">
+            <Spin size="large" tip="Loading..." style={{ color: "skyblue" }} />
+          </div>
+        </div>
+      )}
     </>
   );
 };

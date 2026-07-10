@@ -4,6 +4,7 @@ import { getPost } from "./Services/getPosts.js";
 import { useOutletContext } from "react-router-dom";
 import ExpireModal from "./Modals/ExpireModal.jsx";
 import OtherProfile from "./OtherProfile.jsx";
+import {Spin} from "antd"
 const Home = () => {
   const [posts, setPosts] = useState([]);
   const user = JSON.parse(localStorage.getItem("user"));
@@ -11,6 +12,7 @@ const Home = () => {
   const [sessionExpire, setSessionExpire] = useState(false);
   const [flag,setFlag]=useState(false);
   const [Id,setId]=useState(null)
+  const [loading,setLoading]=useState(true)
   const onClose=(f)=>{
     setFlag(f)
   }
@@ -20,13 +22,19 @@ const Home = () => {
   async function fetchPost() {
     if (user) {
       const getPosts = await getPost(user.access_token);
+      if(getPosts){
+        setLoading(false)
+      }
       if (getPosts === 401) {
         console.log("hello byy");
         setSessionExpire(true);
+        setLoading(false)
+        
       }
       setPosts(getPosts);
     } else {
       setSessionExpire(true);
+      setLoading(false)
     }
   }
   useEffect(() => {
@@ -53,8 +61,8 @@ const Home = () => {
         {sessionExpire ? (
           <ExpireModal />
         ) : (
-          <span className="sm:ml-10 ml-0 mt-10 ">
-            {!flag?posts.map((user) => (
+          <span className="ml-0 mt-10 ">
+            {(!flag || loading)?posts.map((user) => (
               <Posts
                 key={user.id}
                 name={user.user.username}
@@ -76,6 +84,13 @@ const Home = () => {
         )}
         
       </div>
+       {loading && (
+        <div className="fixed inset-0 bg-[#121111ba] ">
+          <div className="sm:mt-80 mt-75 ml-36 inline-block sm:ml-180 ">
+            <Spin size="large" tip="Loading..." style={{color:"skyblue"}} />
+          </div>
+        </div>
+      )}
     </>
   );
 };
