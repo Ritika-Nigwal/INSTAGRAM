@@ -7,9 +7,14 @@ const UserPosts = (props) => {
   const [bgStyle, setBgStyle] = useState("");
   const [flag, setFlag] = useState(false);
   const [confirm, setConfirm] = useState(false);
+  const [loading,setLoading]=useState(false)
   const deletePostHandler = () => {
+    setLoading(true)
     setConfirm(false)
-    deletePost(props.id);
+    const response=deletePost(props.id);
+    if (response){
+      setLoading(false)
+    }
   };
   const size = () => {
     setStyle(
@@ -38,7 +43,7 @@ const UserPosts = (props) => {
         onClick={size}
       />
       {
-        confirm && <DeleteModal isOpen={true} onClose={()=>setConfirm(false)} onConfirm={deletePostHandler}/>
+        confirm && <DeleteModal isOpen={true} onClose={()=>{setConfirm(false);setLoading(false)}} onConfirm={deletePostHandler}/>
       }
     </div>
   );

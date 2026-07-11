@@ -12,7 +12,7 @@ const Home = () => {
   const [sessionExpire, setSessionExpire] = useState(false);
   const [flag,setFlag]=useState(false);
   const [Id,setId]=useState(null)
-  const [loading,setLoading]=useState(true)
+  const [loading,setLoading]=useState(false)
   const onClose=(f)=>{
     setFlag(f)
   }
@@ -21,6 +21,7 @@ const Home = () => {
   }
   async function fetchPost() {
     if (user) {
+      setLoading(false)
       const getPosts = await getPost(user.access_token);
       if(getPosts){
         setLoading(false)
@@ -29,7 +30,6 @@ const Home = () => {
         console.log("hello byy");
         setSessionExpire(true);
         setLoading(false)
-        
       }
       setPosts(getPosts);
     } else {

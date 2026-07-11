@@ -3,16 +3,22 @@ import ReactDOM from "react-dom";
 import { uploadFile } from "./Services/uploadImage.js";
 import { createPost } from "./Services/createPost.js";
 import { get_post } from "./Services/profile.js";
-import { CameraOutlined } from "@ant-design/icons";
+import { CameraOutlined } from "@ant-design/icons"
+import {Spin} from "antd"
 const CreatePost = (props) => {
   const [caption, setCaption] = useState();
   const [flag, setFlag] = useState(false);
   const [image, setImage] = useState();
+  const [loading,setLoading]=useState(false)
   const user = JSON.parse(localStorage.getItem("user"));
   const create = async (e) => {
     if (user) {
+      setLoading(true)
       e.preventDefault();
       const url = await uploadFile(image, user.access_token);
+      if(url){
+        setFlag(false)
+      }
       if (!image) {
         alert("image is required....");
         return;
@@ -22,8 +28,10 @@ const CreatePost = (props) => {
         caption,
         user.access_token,
       );
-      setFlag(false);
-      get_post(user.user_id);
+      if (successMessage){
+        setLoading(false)
+      }
+      get_post(user.access_token,user.user_id);
       props.refresh();
       setCaption("");
     }
@@ -76,6 +84,13 @@ const CreatePost = (props) => {
           </div>,
           document.getElementById("modal"),
         )}
+        {loading && (
+        <div className="fixed inset-0 bg-[#121111ba] ">
+          <div className="sm:mt-80 mt-75 ml-36 inline-block sm:ml-180 ">
+            <Spin size="large" tip="Loading..." style={{ color: "skyblue" }} />
+          </div>
+        </div>
+      )}
     </div>
   );
 };

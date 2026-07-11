@@ -6,10 +6,13 @@ import { update_user } from "./Services/register";
 import { uploadFile } from "./Services/uploadImage";
 import { getCurrentUser } from "./Services/getUser";
 import ExpireModal from "./Modals/ExpireModal";
+import { useOutletContext } from "react-router-dom";
+
 import { Spin } from "antd";
 const Register = () => {
   const [userInfo, setUserInfo] = useState({});
   const [user_post, setUserPost] = useState([]);
+  const { refreshKey, refreshPost } = useOutletContext();
   const [flag, setFlag] = useState(false);
   const [showProfile, setShowProfile] = useState(false);
   const [image, setImage] = useState();
@@ -45,10 +48,13 @@ const Register = () => {
     }
   };
   const create = async (e) => {
+    setLoading(true)
+    setFlag(false)
     e.preventDefault();
     if (user) {
       const url = await uploadFile(image, user.access_token);
       if (url === 401) {
+        setLoading(false)
         setExpire(true);
       }
       if (!image) {
@@ -56,7 +62,9 @@ const Register = () => {
         return;
       }
       const successMessage = await update_user(url.filename, bio);
-      setFlag(false);
+      if(successMessage){
+        setLoading(false)
+      }
       setBio("");
       fetchUserInfo();
     } else {
@@ -68,7 +76,7 @@ const Register = () => {
     fetchUserInfo();
     fetchUser();
     console.log(`${import.meta.env.VITE_API_URL}/${userInfo.id}`);
-  }, []);
+  }, [refreshKey]);
   return (
     <>
       {expire ? (

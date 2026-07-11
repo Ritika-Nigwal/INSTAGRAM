@@ -6,11 +6,13 @@ import { deleteComment } from "../Services/deleteComment";
 import OtherProfile from "../OtherProfile";
 import ReactDOM from "react-dom";
 import { getPost } from "../Services/getPosts";
+import { Spin } from "antd";
 import DeleteModal from "../Modals/DeleteModal";
 const Posts = (props) => {
   const [comment, setComment] = useState("");
   const [commentList, setCommentList] = useState(props.comments || []);
   const [flag, setFlag] = useState(false);
+  const [loading, setLoading] = useState(false);
   const user = JSON.parse(localStorage.getItem("user"));
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [commentToDelete, setCommentToDelete] = useState(null);
@@ -22,18 +24,21 @@ const Posts = (props) => {
   }, [props.comments]);
   console.log(props.id);
   const onConfirm = async () => {
-    {
-      if (!commentToDelete) return;
-      await deleteComment(commentToDelete);
-      setCommentList((prev) => prev.filter((c) => c.id !== commentToDelete));
-      setShowDeleteModal(false);
-      setCommentToDelete(null);
-      try {
-        getPost(user.access_token);
-      } catch (e) {
-        console.error(e);
-      }
+    setLoading(true);
+    setShowDeleteModal(false);
+    if (!commentToDelete) return;
+    const data = await deleteComment(commentToDelete);
+    if (data) {
+      setLoading(false);
     }
+    setCommentList((prev) => prev.filter((c) => c.id !== commentToDelete));
+    setCommentToDelete(null);
+    try {
+      getPost(user.access_token);
+    } catch (e) {
+      console.error(e);
+    }
+    setLoading(false)
   };
   const onCloseDelete = () => {
     setShowDeleteModal(false);
@@ -68,6 +73,7 @@ const Posts = (props) => {
             className="pt-5 cursor-pointer font-serif text-xl gradientText sm:text-2xl whitespace-nowrap "
             onClick={() => {
               props.onClose(true);
+             
               props.setId(props.user_id);
             }}
           >
@@ -136,6 +142,13 @@ const Posts = (props) => {
           </div>,
           document.getElementById("modal"),
         )}
+      {loading && (
+        <div className="fixed inset-0 bg-[#121111ba] ">
+          <div className="sm:mt-80 mt-75 ml-36 inline-block sm:ml-180 ">
+            <Spin size="large" tip="Loading..." style={{ color: "skyblue" }} />
+          </div>
+        </div>
+      )}
     </>
   );
 };

@@ -43,7 +43,7 @@ const Login = () => {
   }
 
   async function login(e) {
-
+    setLoading(true)
     e.preventDefault();
     const message = await AuthLogin(name, password, email, flag, navigate);
     console.log(message);
@@ -125,10 +125,6 @@ const Login = () => {
             <div className="ml-4 sm:ml-0">
               {" "}
               <button
-                onClick={() => {
-                  setFlag(true);
-                  setLoading(true);
-                }}
                 type="submit"
                 style={{
                   border: "0.2em solid",
