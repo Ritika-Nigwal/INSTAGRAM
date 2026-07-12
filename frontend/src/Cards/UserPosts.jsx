@@ -30,15 +30,15 @@ const UserPosts = (props) => {
     <div className={flag ? `${bgStyle}` : ""}>
       {props.isYou && (
         <div className="relative">
-          <img src={Image3} className="sm:h-10 absolute h-8 m-1" onClick={()=>setConfirm(true)}></img>
+          <img src={Image3} className="sm:h-10 absolute cursor-pointer h-8 m-1" onClick={()=>setConfirm(true)}></img>
         </div>
       )}
       <img
         src={props.post}
         className={
           flag
-            ? ` p-1 center bg-blue-100 ${style}`
-            : " h-120 w-75 my-2 sm:h-120 sm:w-85 p-1 sm:my-0  bg-blue-100"
+            ? ` p-1 center bg-blue-100 ${style} cursor-pointer`
+            : " h-120 w-75 my-2 sm:h-120 sm:w-85 p-1 sm:my-0 cursor-pointer bg-blue-100"
         }
         onClick={size}
       />

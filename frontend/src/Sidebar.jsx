@@ -66,7 +66,7 @@ const Sidebar = () => {
               onClick={handleNavClick}
             >
               <HomeOutlined className="text-2xl text-indigo-700" />
-              <span className="ml-2 none text-gray-600  md:inline-block group-hover:inline-block transition-all duration-200 opacity-0 group-hover:opacity-100">
+              <span className="ml-2 none gradientText text-gray-600  md:inline-block group-hover:inline-block transition-all duration-200 opacity-0 group-hover:opacity-100">
                 Home
               </span>
             </NavLink>
@@ -81,8 +81,8 @@ const Sidebar = () => {
               onClick={handleNavClick}
             >
               <UserAddOutlined className="text-2xl text-indigo-700" />
-              <span className="ml-2 none text-gray-600  md:inline-block group-hover:inline-block transition-all duration-200 opacity-0 group-hover:opacity-100">
-                Register
+              <span className="ml-2 gradientText none text-gray-600  md:inline-block group-hover:inline-block transition-all duration-200 opacity-0 group-hover:opacity-100">
+                Profile
               </span>
             </NavLink>
           </li>
@@ -95,7 +95,7 @@ const Sidebar = () => {
               onClick={handleNavClick}
             >
               <VideoCameraOutlined className="text-2xl text-indigo-700" />
-              <span className="ml-2 none text-gray-600  md:inline-block group-hover:inline-block transition-all duration-200 opacity-0 group-hover:opacity-100">
+              <span className="ml-2 gradientText none text-gray-600  md:inline-block group-hover:inline-block transition-all duration-200 opacity-0 group-hover:opacity-100">
                 Reels
               </span>
             </NavLink>

@@ -63,7 +63,7 @@ const OtherProfile = ({ id, closeFlag }) => {
             <div className="h-40 p-2 items-center ml-4 w-78 sm:w-280 mt-10 flex justify-between bg-[linear-gradient(135deg,#52c2eef0,rgb(100,320,320),rgb(200,400,200))] sm:h-70 rounded-xl sm:p-10 ">
               <div className="">
                 <img
-                  className="h-20 w-20 mt-1 sm:w-30  sm:h-30  text-[#52c2eef0] rounded-full border-2 border-amber-50"
+                  className="h-20 w-20 mt-1 sm:w-30  cursor-pointer sm:h-30  text-[#52c2eef0] rounded-full border-2 border-amber-50"
                   src={`${import.meta.env.VITE_API_URL}/${otherUser.profile}`}
                   onClick={() => setFlag(true)}
                 />

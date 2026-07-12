@@ -86,7 +86,7 @@ const Posts = (props) => {
         </span>
         <img
           src={props.post}
-          className="h-120 w-75 sm:h-150 sm:w-130 sm:p-1 bg-blue-100 "
+          className="h-120 w-75 cursor-pointer sm:h-150 sm:w-130 sm:p-1 bg-blue-100 "
         />
         <p className="sm:text-2xl font-serif text-purple-950">Comments</p>
         <div className="bg-gray-300 h-15 my-1 rounded-xl sm:h-25 sm:rounded-3xl flex flex-col gap-2 overflow-auto align-middle">
@@ -100,7 +100,7 @@ const Posts = (props) => {
                     setShowDeleteModal(true);
                   }}
                 >
-                  <img src={Image3} className="h-6 m-1"></img>
+                  <img src={Image3} className="h-6 m-1 cursor-pointer"></img>
                 </button>
               </p>
             </div>
@@ -114,7 +114,7 @@ const Posts = (props) => {
         />
         <button
           onClick={createComment}
-          className="bg-green-400 w-16 mb-16 text-center sm:py-1 sm:px-3 rounded"
+          className="bg-green-400 cursor-pointer w-16 mb-16 text-center sm:py-1 sm:px-3 rounded"
         >
           send
         </button>

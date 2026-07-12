@@ -105,7 +105,7 @@ const Register = () => {
             </div>
             <button
               onClick={() => setFlag(true)}
-              className="bg-blue-600 sm:h-12 p-1 sm:p-1 text-[10px] sm:text-2xl whitespace-nowrap mt-20 h-8 rounded-xl border-2 border-blue-900 text-white"
+              className="bg-blue-600 cursor-pointer sm:h-12 p-1 sm:p-1 text-[10px] sm:text-2xl whitespace-nowrap mt-20 h-8 rounded-xl border-2 border-blue-900 text-white"
             >
               Edit Profile
             </button>
