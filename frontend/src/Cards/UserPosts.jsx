@@ -11,11 +11,11 @@ const UserPosts = (props) => {
   const [confirm, setConfirm] = useState(false);
   const [loading, setLoading] = useState(false);
   const [refresh,setRefresh]=useOutletContext()
-  const deletePostHandler = () => {
+  const deletePostHandler = async() => {
     setLoading(true);
     setConfirm(false);
   
-    const response = deletePost(props.id);
+    const response =await deletePost(props.id);
     if (response) {
       setLoading(false);
     }
