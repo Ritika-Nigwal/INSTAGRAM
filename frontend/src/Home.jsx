@@ -12,7 +12,7 @@ const Home = () => {
   const [sessionExpire, setSessionExpire] = useState(false);
   const [flag,setFlag]=useState(false);
   const [Id,setId]=useState(null)
-  const [loading,setLoading]=useState(false)
+  const [loading,setLoading]=useState(true)
   const onClose=(f)=>{
     setFlag(f)
   }
