@@ -75,7 +75,6 @@ const Register = () => {
   useEffect(() => {
     fetchUserInfo();
     fetchUser();
-    console.log(`${import.meta.env.VITE_API_URL}/${userInfo.id}`);
   }, [refreshKey]);
   return (
     <>
@@ -119,7 +118,7 @@ const Register = () => {
                 key={user.id}
                 id={user.id}
                 isYou={true}
-                post={`${import.meta.env.VITE_API_URL}/${user.image_url}`}
+                post={`${user.image_url}`}
               />
             ))}
           </div>

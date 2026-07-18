@@ -36,7 +36,6 @@ const OtherProfile = ({ id, closeFlag }) => {
   useEffect(() => {
     fetchUser();
     fetchPost();
-    console.log(`${import.meta.env.VITE_API_URL}/${id}`);
   }, []);
   return (
     <>
@@ -81,7 +80,7 @@ const OtherProfile = ({ id, closeFlag }) => {
                 <UserPosts
                   key={user.id}
                   isYou={false}
-                  post={`${import.meta.env.VITE_API_URL}/${user.image_url}`}
+                  post={`${user.image_url}`}
                 />
               ))}
             </div>

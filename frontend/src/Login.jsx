@@ -9,7 +9,6 @@ import { useState, useRef, useEffect } from "react";
 import { Spin } from "antd";
 const BASE_URL = `${import.meta.env.VITE_API_URL}/posts`;
 const Login = () => {
-   console.log(`${import.meta.env.VITE_API_URL}/users/`)
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
