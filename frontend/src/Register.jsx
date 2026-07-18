@@ -95,7 +95,7 @@ const Register = () => {
             <div className="">
               <img
                 className="h-14 w-16 sm:w-30  sm:h-30 text-[#52c2eef0] cursor-pointer rounded-full border-2 border-amber-50"
-                src={`${import.meta.env.VITE_API_URL}/${userInfo.profile}`}
+                src={`${userInfo.profile}`}
                 onClick={() => setShowProfile(true)}
               />
               <p className="ml-2 mt-2 text-l sm:text-2xl sm:my-4  font-serif">
@@ -170,7 +170,7 @@ const Register = () => {
           <div className="fixed inset-0 bg-[#ffffffce]">
             <div className="absolute sm:left-140 left-20 top-50 sm:top-50 ">
               <img
-                src={`${import.meta.env.VITE_API_URL}/${userInfo.profile}`}
+                src={`${userInfo.profile}`}
                 className="sm:left-20 shadow-2xl rounded-full h-40 w-40 sm:h-100 sm:w-100"
                 onClick={() => setShowProfile(false)}
               />

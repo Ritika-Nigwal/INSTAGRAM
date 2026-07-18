@@ -64,7 +64,7 @@ const OtherProfile = ({ id, closeFlag }) => {
               <div className="">
                 <img
                   className="h-20 w-20 mt-1 sm:w-30  cursor-pointer sm:h-30  text-[#52c2eef0] rounded-full border-2 border-amber-50"
-                  src={`${import.meta.env.VITE_API_URL}/${otherUser.profile}`}
+                  src={`${otherUser.profile}`}
                   onClick={() => setFlag(true)}
                 />
                 <p className="ml-2 mt-2 text-l sm:text-2xl sm:my-4  font-serif">
@@ -93,7 +93,7 @@ const OtherProfile = ({ id, closeFlag }) => {
           <div className="fixed inset-0 bg-[#ffffffce]">
             <div className="absolute sm:left-140 left-20 top-50 sm:top-50 ">
               <img
-                src={`${import.meta.env.VITE_API_URL}/${otherUser.profile}`}
+                src={`${otherUser.profile}`}
                 className="sm:left-20 shadow-2xl h-40 w-40  rounded-full sm:h-100 sm:w-100"
                 onClick={() => setFlag(false)}
                 style={{ boxShadow: "10px 20px 2px rgba(0,0,0,0.1)" }}

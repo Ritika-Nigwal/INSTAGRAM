@@ -4,16 +4,16 @@ from typing import List
 from app.db.session import get_db
 from app.schemas.post import PostCreate, PostResponse
 from app.crud.post import create_post, get_all_posts, delete_post,get_current_user_post
-
+from app.core.imageUpload import upload_image
 from app.schemas.user import UserResponse
 from app.core.oauth2 import get_current_user
 from app.crud.uploadVideo import videoUpload
-
+from dotenv import load_dotenv
 import os
 import string
 import random
 import shutil
-
+load_dotenv() 
 router = APIRouter(prefix="/posts", tags=["Posts"])
 
 IMAGE_URL_TYPES = ["absolute", "relative"]
@@ -69,21 +69,12 @@ def delete_existing_post(
 
 
 @router.post("/image")
-def upload_image(
+def uploadImage(
     image: UploadFile = File(...),
     current_user: UserResponse = Depends(get_current_user),
 ):
-    letters = string.ascii_letters
-    rand_str = "".join(random.choice(letters) for _ in range(6))
-    filename = image.filename
-    extension = filename.split(".")[-1]
-    new_filename = f"{rand_str}.{extension}"
-    path = f"{UPLOAD_DIR}/{new_filename}"
+    return upload_image(image)
 
-    with open(path, "wb+") as buffer:
-        shutil.copyfileobj(image.file, buffer)
-
-    return {"filename": path}
 @router.post("/video")
 def video_upload(video:UploadFile=File(...),user:UploadFile=Depends(get_current_user)):
     return videoUpload(video)

@@ -42,7 +42,7 @@ const Home = () => {
   }, [refreshKey]);
   const urltype = (type, url) => {
     if (type === "relative") {
-      return `${import.meta.env.VITE_API_URL}/${url}`;
+      return `${url}`;
     }
     return url;
   };
@@ -70,7 +70,7 @@ const Home = () => {
                 profile={
                   user.user.profile === ""
                     ? "https://th.bing.com/th/id/OIP.hGSCbXlcOjL_9mmzerqAbQHaHa?w=192&h=192&c=7&r=0&o=7&dpr=1.6&pid=1.7&rm=3"
-                    : `${import.meta.env.VITE_API_URL}/${user.user.profile}`
+                    : `${user.user.profile}`
                 }
                 comments={user.comments}
                 refresh={fetchPost}
