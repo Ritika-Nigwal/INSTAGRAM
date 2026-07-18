@@ -69,11 +69,11 @@ def delete_existing_post(
 
 
 @router.post("/image")
-def uploadImage(
+async def uploadImage(
     image: UploadFile = File(...),
     current_user: UserResponse = Depends(get_current_user),
 ):
-    return upload_image(image)
+    return await upload_image(image)
 
 @router.post("/video")
 def video_upload(video:UploadFile=File(...),user:UploadFile=Depends(get_current_user)):
