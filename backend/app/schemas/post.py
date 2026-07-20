@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 from datetime import datetime
-from typing import List
+from typing import List,Optional
 
 from app.schemas.comment import CommentResponse
 
@@ -25,9 +25,23 @@ class PostResponse(BaseModel):
     image_url: str
     image_url_type: str
     caption: str
+    likes:int
     timestamp: datetime
     user: UserResponse
     comments: List[CommentResponse]
 
     class Config:
         from_attribute = True
+
+class likeSchema(BaseModel):
+    post_id:int
+    likes:Optional[int]
+    class Config:
+        from_attribute=True
+
+class LikePostSchema(BaseModel):
+    post_id:int
+    user_id:int
+    state:Optional[bool]
+    class Config:
+        from_attribute=True

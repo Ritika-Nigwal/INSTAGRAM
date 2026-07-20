@@ -2,13 +2,16 @@ from fastapi import APIRouter, Depends, HTTPException, status, UploadFile, File,
 from sqlalchemy.orm import Session
 from typing import List
 from app.db.session import get_db
-from app.schemas.post import PostCreate, PostResponse
-from app.crud.post import create_post, get_all_posts, delete_post,get_current_user_post
+from app.schemas.post import PostCreate, PostResponse,likeSchema,LikePostSchema
+from app.crud.post import create_post, get_all_posts, delete_post,get_current_user_post,postLike
 from app.core.imageUpload import upload_image
 from app.schemas.user import UserResponse
 from app.core.oauth2 import get_current_user
 from app.crud.uploadVideo import videoUpload
 from dotenv import load_dotenv
+from app.models.post import Post
+from typing import Optional
+from app.models.like import Likes
 import os
 import string
 import random
@@ -44,6 +47,17 @@ def get_posts(db: Session = Depends(get_db),get_user:UserResponse=Depends(get_cu
 @router.get("/user/{id}")
 def getCurrentUserPost(id:int,db:Session=Depends(get_db),user:UserResponse=Depends(get_current_user)):
     return get_current_user_post(db,id)
+@router.patch("/like/{post_id}")
+def likes(request:likeSchema,db:Session=Depends(get_db)):
+    post=db.query(Post).filter(Post.id==request.post_id).first()
+    if not post:
+        return "hello"
+    like=request.model_dump(exclude_unset=True)
+    for key,value in like.items():
+        setattr(post,key,value)
+    db.commit()
+    db.refresh(post)
+    return {"likes":like}
 
 @router.delete("/{post_id}")
 def delete_existing_post(
@@ -78,3 +92,14 @@ async def uploadImage(
 @router.post("/video")
 def video_upload(video:UploadFile=File(...),user:UploadFile=Depends(get_current_user)):
     return videoUpload(video)
+
+@router.post("/likes")
+def likePost(request:LikePostSchema,db:Session=Depends(get_db)):
+    return postLike(request.post_id,request.user_id,request.state,db)
+
+@router.get("/like/{post_id}/{user_id}")
+def getLike(post_id:int,user_id:int,db:Session=Depends(get_db)):
+    likes=db.query(Likes).filter(Likes.post_id==post_id , Likes.user_id==user_id).first()
+    if not likes :
+        return {"liked":False}
+    return {"liked":likes.like}

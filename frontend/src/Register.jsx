@@ -169,7 +169,7 @@ const Register = () => {
           <div className="fixed inset-0 bg-[#ffffffce]">
             <div className="absolute sm:left-140 left-20 top-50 sm:top-50 ">
               <img
-                src={`${user_post.image_url}`}
+                src={`${userInfo.profile}`}
                 className="sm:left-20 shadow-2xl rounded-full h-40 w-40 sm:h-100 sm:w-100"
                 onClick={() => setShowProfile(false)}
               />

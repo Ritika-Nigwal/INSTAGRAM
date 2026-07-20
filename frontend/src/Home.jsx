@@ -76,6 +76,7 @@ const Home = () => {
                 refresh={fetchPost}
                 onClose={onClose}
                 setId={selectId}
+                likes={user.likes}
                 id={user.id}
                 user_id={user.user.id}
               />

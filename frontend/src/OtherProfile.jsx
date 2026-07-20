@@ -63,7 +63,7 @@ const OtherProfile = ({ id, closeFlag }) => {
               <div className="">
                 <img
                   className="h-20 w-20 mt-1 sm:w-30  cursor-pointer sm:h-30  text-[#52c2eef0] rounded-full border-2 border-amber-50"
-                  src={`${user_post.image_url}`}
+                  src={`${otherUser.profile}`}
                   onClick={() => setFlag(true)}
                 />
                 <p className="ml-2 mt-2 text-l sm:text-2xl sm:my-4  font-serif">

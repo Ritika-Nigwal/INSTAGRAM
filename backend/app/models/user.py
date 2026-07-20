@@ -12,6 +12,8 @@ class User(Base):
     bio=Column(String,nullable=True)
     email = Column(String, nullable=False)
     password = Column(String, nullable=False)
+    followers=Column(Integer,default=0)
     posts = relationship("Post", back_populates="user")
     comments = relationship("Comment", back_populates="user")
+    likes=relationship("Likes",back_populates="user")
 

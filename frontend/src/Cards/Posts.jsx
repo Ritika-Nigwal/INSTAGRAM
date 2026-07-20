@@ -7,7 +7,9 @@ import OtherProfile from "../OtherProfile";
 import ReactDOM from "react-dom";
 import { getPost } from "../Services/getPosts";
 import { Spin } from "antd";
+import { HeartFilled, HeartOutlined } from "@ant-design/icons";
 import DeleteModal from "../Modals/DeleteModal";
+import { LikePost, postLike, getLike } from "../Services/like.js";
 const Posts = (props) => {
   const [comment, setComment] = useState("");
   const [commentList, setCommentList] = useState(props.comments || []);
@@ -16,13 +18,31 @@ const Posts = (props) => {
   const user = JSON.parse(localStorage.getItem("user"));
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [commentToDelete, setCommentToDelete] = useState(null);
+  const [likeState, setLike] = useState(false);
+  const [totalLikes, setTotalLikes] = useState(props.likes);
   const fetchRefresh = () => {
     setCommentList(props.comments);
   };
   useEffect(() => {
     fetchRefresh();
-  }, [props.comments]);
-  console.log(props.id);
+  }, [props.comments, props.likes]);
+  const doLike = async () => {
+    setLike((prev) => !prev);
+    if (!likeState) {
+      setTotalLikes((prev) => prev + 1);
+      const postlike = await LikePost(totalLikes + 1, props.id);
+      const addlike = await postLike(props.id, !likeState);
+    } else {
+      setTotalLikes((prev) => prev - 1);
+      const postlike = await LikePost(totalLikes - 1, props.id);
+      const addlike = await postLike(props.id, !likeState);
+    }
+  };
+
+  useEffect(async () => {
+    const response = await getLike(props.id);
+    setLike(response.liked);
+  }, []);
   const onConfirm = async () => {
     setLoading(true);
     setShowDeleteModal(false);
@@ -38,7 +58,7 @@ const Posts = (props) => {
     } catch (e) {
       console.error(e);
     }
-    setLoading(false)
+    setLoading(false);
   };
   const onCloseDelete = () => {
     setShowDeleteModal(false);
@@ -73,7 +93,7 @@ const Posts = (props) => {
             className="pt-5 cursor-pointer font-serif text-xl gradientText sm:text-2xl whitespace-nowrap "
             onClick={() => {
               props.onClose(true);
-             
+
               props.setId(props.user_id);
             }}
           >
@@ -88,6 +108,18 @@ const Posts = (props) => {
           src={props.post}
           className="h-120 w-75 cursor-pointer sm:h-150 sm:w-130 sm:p-1 bg-blue-100 "
         />
+        <span onClick={doLike}>
+          {!likeState ? (
+            <HeartOutlined style={{ fontSize: "35px", height: "40px" }} className="hover:animate-bounce " />
+
+          ) : (
+            <HeartFilled
+              style={{ color: "red", fontSize: "35px", height: "40px" }}
+              className="hover:animate-bounce"
+            />
+          )}
+          <p className="font-semibold text-xl">{totalLikes} Likes💗</p>
+        </span>
         <p className="sm:text-2xl font-serif text-purple-950">Comments</p>
         <div className="bg-gray-300 h-15 my-1 rounded-xl sm:h-25 sm:rounded-3xl flex flex-col gap-2 overflow-auto align-middle">
           {commentList.map((comment) => (
@@ -131,11 +163,11 @@ const Posts = (props) => {
       </span>
       {flag &&
         ReactDOM.createPortal(
-          <div className="fixed inset-0 bg-[#ffffffce]">
+          <div className="fixed inset-0 bg-[#2e3031ce]">
             <div className="absolute h-30 w-80 sm:left-150 left-20 top-50 sm:top-50 ">
               <img
                 src={props.profile}
-                className="sm:left-20 h-40 w-40 shadow-2xl rounded-full sm:h-100 sm:w-100"
+                className="sm:left-16 h-40 w-40 shadow-2xl rounded-full sm:rounded-full sm:h-80 sm:w-100"
                 onClick={() => setFlag(false)}
               />
             </div>
