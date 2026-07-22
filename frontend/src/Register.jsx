@@ -7,8 +7,9 @@ import { uploadFile } from "./Services/uploadImage";
 import { getCurrentUser } from "./Services/getUser";
 import ExpireModal from "./Modals/ExpireModal";
 import { useOutletContext } from "react-router-dom";
-
+import { fetchFollower, fetchFollowing } from "./Services/followers";
 import { Spin } from "antd";
+import Follow from "./Cards/Follow";
 const Register = () => {
   const [userInfo, setUserInfo] = useState({});
   const [user_post, setUserPost] = useState([]);
@@ -19,7 +20,33 @@ const Register = () => {
   const [bio, setBio] = useState();
   const [expire, setExpire] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [showList, setShowList] = useState(false);
+  const [list, setList] = useState([]);
   const user = JSON.parse(localStorage.getItem("user"));
+  const showFollowers = async () => {
+    setLoading(true);
+    const response = await fetchFollower(user.user_id);
+    if (response) {
+      setLoading(false);
+    }
+
+    const data = await response.json();
+    setShowList(true);
+    setList([...data.followers]);
+  };
+  const closeList = (flag) => {
+    setShowList(flag);
+  };
+  const showFollowing = async () => {
+    setLoading(true);
+    const response = await fetchFollowing(user.user_id);
+    if (response) {
+      setLoading(false);
+    }
+    const data = await response.json();
+    setList([...data.followers]);
+    setShowList(true);
+  };
   const fetchUserInfo = async () => {
     if (user) {
       const Userdata = await getCurrentUser(user.user_id);
@@ -48,13 +75,13 @@ const Register = () => {
     }
   };
   const create = async (e) => {
-    setLoading(true)
-    setFlag(false)
+    setLoading(true);
+    setFlag(false);
     e.preventDefault();
     if (user) {
       const url = await uploadFile(image, user.access_token);
       if (url === 401) {
-        setLoading(false)
+        setLoading(false);
         setExpire(true);
       }
       if (!image) {
@@ -62,8 +89,8 @@ const Register = () => {
         return;
       }
       const successMessage = await update_user(url.filename, bio);
-      if(successMessage){
-        setLoading(false)
+      if (successMessage) {
+        setLoading(false);
       }
       setBio("");
       fetchUserInfo();
@@ -92,16 +119,46 @@ const Register = () => {
         >
           <div className="h-40 p-2 items-center ml-4 w-78 sm:w-280 mt-10 flex justify-between bg-[linear-gradient(135deg,#52c2eef0,rgb(100,320,320),rgb(200,400,200))] sm:h-70 rounded-xl sm:p-10 ">
             <div className="">
-              <img
-                className="h-14 w-16 sm:w-30  sm:h-30 text-[#52c2eef0] cursor-pointer rounded-full border-2 border-amber-50"
-                src={`${userInfo.profile}`}
-                onClick={() => setShowProfile(true)}
-              />
-              <p className="ml-2 mt-2 text-l sm:text-2xl sm:my-4  font-serif">
-                {userInfo.username}
-              </p>
-              <p className="ml-2">{userInfo.bio}</p>
+              <div className="flex mb-2 gap-10 items-center">
+                <img
+                  className="h-14 w-16 sm:w-30  sm:h-30 text-[#52c2eef0] cursor-pointer rounded-full border-2 border-amber-50"
+                  src={userInfo.profile==""?"https://th.bing.com/th/id/OIP.hGSCbXlcOjL_9mmzerqAbQHaHa?w=192&h=192&c=7&r=0&o=7&dpr=1.6&pid=1.7&rm=3":userInfo.profile}
+                  onClick={() => setShowProfile(true)}
+                />
+                <div className="flex gap-6 sm:gap-10 ml-2 sm:ml-10">
+                  <div>
+                    <button
+                      className="text-[16px] mt-2 text-gray-800 bg-[#ffffff6a] px-1 rounded-m sm:text-2xl sm:mb-4  "
+                      onClick={showFollowers}
+                    >
+                      Followers
+                    </button>
+                    <p className="sm:text-gray-700 sm:text-xl">
+                      {userInfo.followers}
+                    </p>
+                  </div>
+                  <div>
+                    <button
+                      className="text-[16px] mt-2 text-gray-800 bg-[#ffffff6a] px-1 rounded-m sm:text-2xl sm:mb-4 "
+                      onClick={showFollowing}
+                    >
+                      Following
+                    </button>
+                    <p className="sm:text-gray-700 sm:text-xl">
+                      {userInfo.following}
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <p className="ml-2 mt-2 text-l sm:text-2xl sm:my-4  font-serif">
+                  {userInfo.username}
+                </p>
+                <p className="ml-2 text-[12px]">{userInfo.bio}</p>
+              </div>
             </div>
+
             <button
               onClick={() => setFlag(true)}
               className="bg-blue-600 cursor-pointer sm:h-12 p-1 sm:p-1 text-[10px] sm:text-2xl whitespace-nowrap mt-20 h-8 rounded-xl border-2 border-blue-900 text-white"
@@ -184,6 +241,15 @@ const Register = () => {
           </div>
         </div>
       )}
+      {showList &&
+        ReactDOM.createPortal(
+          <div className="fixed inset-0 bg-[#121111ba] ">
+            <div className="sm:mt-40 mt-60 ml-15 inline-block sm:ml-100  ">
+              <Follow data={list} close={closeList} />
+            </div>
+          </div>,
+          document.getElementById("modal"),
+        )}
     </>
   );
 };

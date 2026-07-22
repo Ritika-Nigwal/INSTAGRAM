@@ -10,6 +10,8 @@ import { Spin } from "antd";
 import { HeartFilled, HeartOutlined } from "@ant-design/icons";
 import DeleteModal from "../Modals/DeleteModal";
 import { LikePost, postLike, getLike } from "../Services/like.js";
+import { followUser } from "../Services/followers.js";
+import { message } from "antd";
 const Posts = (props) => {
   const [comment, setComment] = useState("");
   const [commentList, setCommentList] = useState(props.comments || []);
@@ -18,8 +20,22 @@ const Posts = (props) => {
   const user = JSON.parse(localStorage.getItem("user"));
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [commentToDelete, setCommentToDelete] = useState(null);
-  const [likeState, setLike] = useState(false);
+  const [likeState, setLike] = useState(true);
   const [totalLikes, setTotalLikes] = useState(props.likes);
+  const follow = async () => {
+    setLoading(true)
+    const response = await followUser(user.user_id, props.id);
+    if(response){
+      setLoading(false)
+    }
+    const detail=await response.json()
+    console.log(detail)
+    if (detail.detail == 403) {
+      message.error(`you already followed ${props.name}`,4);
+    } else {
+      message.success(`you followed ${props.name}`, 4);
+    }
+  };
   const fetchRefresh = () => {
     setCommentList(props.comments);
   };
@@ -39,9 +55,12 @@ const Posts = (props) => {
     }
   };
 
-  useEffect(async () => {
-    const response = await getLike(props.id);
-    setLike(response.liked);
+  useEffect(() => {
+    const call = async () => {
+      const response = await getLike(props.id);
+      setLike(response.liked);
+    };
+    call();
   }, []);
   const onConfirm = async () => {
     setLoading(true);
@@ -89,20 +108,29 @@ const Posts = (props) => {
             className="sm:h-16 h-16 w-16 cursor-pointer  sm:w-16  rounded-full my-1"
             onClick={() => setFlag(true)}
           />
-          <h1
-            className="pt-5 cursor-pointer font-serif text-xl gradientText sm:text-2xl whitespace-nowrap "
-            onClick={() => {
-              props.onClose(true);
+          <div className="flex flex-wrap justify-around gap-6">
+            <h1
+              className="pt-5 cursor-pointer font-serif text-[16px] gradientText sm:text-2xl whitespace-nowrap "
+              onClick={() => {
+                props.onClose(true);
 
-              props.setId(props.user_id);
-            }}
-          >
-            User : {props.name} ..........
-          </h1>
-          <img
-            src={Insta}
-            className=" hidden w-10 h-10 mt-2 sm:mt-4  sm:block md:block "
-          />
+                props.setId(props.user_id);
+              }}
+            >
+              User : {props.name}
+            </h1>
+
+            <button
+              onClick={follow}
+              className="w-15 text-[12px]  ml-2 h-6 mt-4 sm:ml-10 sm:w-25 sm:text-xl sm:mt-4 sm:px-2 sm:h-10 rounded-xl bg-[#8cbdef55]"
+              style={{
+                border: "3px solid",
+                borderImage: "linear-gradient(to right,#faf,#baf) 1",
+              }}
+            >
+              +Follow
+            </button>
+          </div>
         </span>
         <img
           src={props.post}
@@ -110,8 +138,10 @@ const Posts = (props) => {
         />
         <span onClick={doLike}>
           {!likeState ? (
-            <HeartOutlined style={{ fontSize: "35px", height: "40px" }} className="hover:animate-bounce " />
-
+            <HeartOutlined
+              style={{ fontSize: "35px", height: "40px" }}
+              className="hover:animate-bounce "
+            />
           ) : (
             <HeartFilled
               style={{ color: "red", fontSize: "35px", height: "40px" }}
