@@ -84,6 +84,7 @@ const Posts = (props) => {
     setCommentToDelete(null);
   };
   const createComment = async (e) => {
+    setLoading(true)
     const postComment = await fetch(
       `${import.meta.env.VITE_API_URL}/comments/`,
       {
@@ -95,6 +96,7 @@ const Posts = (props) => {
         body: JSON.stringify({ text: comment, post_id: props.id }),
       },
     );
+    setLoading(false)
     const data = await postComment.json();
     setCommentList((prev) => [...prev, data]);
     setComment("");
@@ -197,7 +199,7 @@ const Posts = (props) => {
             <div className="absolute h-30 w-80 sm:left-150 left-20 top-50 sm:top-50 ">
               <img
                 src={props.profile}
-                className="sm:left-16 h-40 w-40 shadow-2xl rounded-full sm:rounded-full sm:h-80 sm:w-100"
+                className="sm:left-16 h-45 w-45 shadow-2xl border-2 border-white rounded-full sm:rounded-full sm:h-80 sm:w-100"
                 onClick={() => setFlag(false)}
               />
             </div>

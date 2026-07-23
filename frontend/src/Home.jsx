@@ -21,7 +21,7 @@ const Home = () => {
   };
   async function fetchPost() {
     if (user) {
-      setLoading(false);
+      setLoading(true);
       const getPosts = await getPost(user.access_token);
       if (getPosts) {
         setLoading(false);
@@ -31,7 +31,7 @@ const Home = () => {
         setSessionExpire(true);
         setLoading(false);
       }
-      setPosts(getPosts);
+      setPosts(getPosts.reverse());
     } else {
       setSessionExpire(true);
       setLoading(false);

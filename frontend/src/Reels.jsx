@@ -24,7 +24,7 @@ const Reels = () => {
           }
         });
       },
-      { threshold: 0.7 }, // play when 70% visible
+      { threshold: 0.7 },
     );
 
     videoRefs.current.forEach((video) => {
@@ -41,7 +41,7 @@ const Reels = () => {
 
   return (
     <>
-      {/* <div
+      <div
         style={{
           backgroundImage:
             'url("https://th.bing.com/th/id/OIP.zqGuGQNW-UYxaPqHqa7CsQHaEo?w=263&h=180&c=7&r=0&o=7&dpr=1.4&pid=1.7&rm=3")',
@@ -61,22 +61,15 @@ const Reels = () => {
             </video>
           </div>
         ))}
-      </div> */}
-      <Follow data={[
-        {
-            "id": 1,
-            "username": "Ritika",
-            "profile": "https://vuvwlmqoynejbeodbalz.supabase.co/storage/v1/object/public/images/IMG_20260715_153602.jpg",
-            "bio": "Python Developer 😊"
-        }
-    ]}/>
-      {/* {loading && (
+      </div>
+    
+      {loading && (
         <div className="fixed inset-0 bg-[#121111ba] ">
           <div className="sm:mt-80 mt-75 ml-36 inline-block sm:ml-180 ">
             <Spin size="large" tip="Loading..." style={{ color: "skyblue" }} />
           </div>
         </div>
-      )} */}
+      )}
     </>
   );
 };

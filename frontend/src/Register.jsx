@@ -68,7 +68,7 @@ const Register = () => {
       if (data === 401) {
         setExpire(true);
       } else {
-        setUserPost([...data]);
+        setUserPost([...data.reverse()]);
       }
     } else {
       setExpire(true);
@@ -117,51 +117,62 @@ const Register = () => {
           }}
           className=""
         >
-          <div className="h-40 p-2 items-center ml-4 w-78 sm:w-280 mt-10 flex justify-between bg-[linear-gradient(135deg,#52c2eef0,rgb(100,320,320),rgb(200,400,200))] sm:h-70 rounded-xl sm:p-10 ">
+          <div className="h-40 p-2 items-center ml-4 w-76 sm:w-280 mt-10 flex justify-between bg-[linear-gradient(135deg,#52c2eef0,rgb(100,320,320),rgb(200,400,200))] sm:h-72 rounded-xl sm:p-10 ">
             <div className="">
-              <div className="flex mb-2 gap-10 items-center">
+              <div className="flex mb-2 gap-6 justify-between sm:gap-20 items-center">
                 <img
-                  className="h-14 w-16 sm:w-30  sm:h-30 text-[#52c2eef0] cursor-pointer rounded-full border-2 border-amber-50"
-                  src={userInfo.profile==""?"https://th.bing.com/th/id/OIP.hGSCbXlcOjL_9mmzerqAbQHaHa?w=192&h=192&c=7&r=0&o=7&dpr=1.6&pid=1.7&rm=3":userInfo.profile}
+                  className="h-20 w-20  sm:w-32 sm:h-32  text-[#52c2eef0] cursor-pointer rounded-full border-2 border-amber-50"
+                  src={
+                    userInfo.profile == ""
+                      ? "https://th.bing.com/th/id/OIP.hGSCbXlcOjL_9mmzerqAbQHaHa?w=192&h=192&c=7&r=0&o=7&dpr=1.6&pid=1.7&rm=3"
+                      : userInfo.profile
+                  }
                   onClick={() => setShowProfile(true)}
                 />
-                <div className="flex gap-6 sm:gap-10 ml-2 sm:ml-10">
-                  <div>
-                    <button
-                      className="text-[16px] mt-2 text-gray-800 bg-[#ffffff6a] px-1 rounded-m sm:text-2xl sm:mb-4  "
-                      onClick={showFollowers}
-                    >
-                      Followers
-                    </button>
-                    <p className="sm:text-gray-700 sm:text-xl">
-                      {userInfo.followers}
-                    </p>
-                  </div>
-                  <div>
-                    <button
-                      className="text-[16px] mt-2 text-gray-800 bg-[#ffffff6a] px-1 rounded-m sm:text-2xl sm:mb-4 "
-                      onClick={showFollowing}
-                    >
-                      Following
-                    </button>
-                    <p className="sm:text-gray-700 sm:text-xl">
-                      {userInfo.following}
-                    </p>
-                  </div>
+              
+                <div className="">
+                  <button
+                    className="text-[16px] mt-2 text-gray-800 bg-[#ffffff6a] px-1 rounded-m sm:text-2xl sm:mb-4  "
+                    onClick={showFollowers}
+                  >
+                    Followers
+                  </button>
+                  <p className="sm:text-gray-700 sm:text-xl">
+                    {userInfo.followers}
+                  </p>
                 </div>
+                <div>
+                  <button
+                    className="text-[16px] mt-2 text-gray-800 bg-[#ffffff6a] px-1 rounded-m sm:text-2xl sm:mb-4 "
+                    onClick={showFollowing}
+                  >
+                    Following
+                  </button>
+                  <p className="sm:text-gray-700 sm:text-xl">
+                    {userInfo.following}
+                  </p>
+                </div>
+              
               </div>
-
-              <div>
-                <p className="ml-2 mt-2 text-l sm:text-2xl sm:my-4  font-serif">
-                  {userInfo.username}
-                </p>
-                <p className="ml-2 text-[12px]">{userInfo.bio}</p>
+              <div className="flex justify-between">
+                <div>
+                  <p className="ml-2 mt-2 text-l sm:text-2xl sm:my-4  font-serif">
+                    {userInfo.username}
+                  </p>
+                  <p className="ml-2 text-[12px]">{userInfo.bio}</p>
+                </div>{" "}
+                <button
+                  onClick={() => setFlag(true)}
+                  className="bg-blue-600  cursor-pointer sm:hidden sm:h-12 p-1 sm:p-1 text-[10px] sm:text-2xl whitespace-nowrap mt-4 h-8 rounded-xl border-2 border-blue-900 text-white"
+                >
+                  Edit Profile
+                </button>
               </div>
             </div>
 
             <button
               onClick={() => setFlag(true)}
-              className="bg-blue-600 cursor-pointer sm:h-12 p-1 sm:p-1 text-[10px] sm:text-2xl whitespace-nowrap mt-20 h-8 rounded-xl border-2 border-blue-900 text-white"
+              className="bg-blue-600 cursor-pointer hidden sm:block sm:h-12 p-1 sm:p-1 text-[10px] sm:text-2xl whitespace-nowrap mt-20 h-8 rounded-xl border-2 border-blue-900 text-white"
             >
               Edit Profile
             </button>
@@ -227,7 +238,7 @@ const Register = () => {
             <div className="absolute sm:left-140 left-20 top-50 sm:top-50 ">
               <img
                 src={`${userInfo.profile}`}
-                className="sm:left-20 shadow-2xl rounded-full h-40 w-40 sm:h-100 sm:w-100"
+                className="sm:left-20 shadow-2xl rounded-full h-50 w-50 border-2 border-white sm:h-100 sm:w-100"
                 onClick={() => setShowProfile(false)}
               />
             </div>

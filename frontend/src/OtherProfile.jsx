@@ -40,7 +40,6 @@ const OtherProfile = ({ id, closeFlag }) => {
     setList([...data.followers]);
     setShowList(true);
   };
-  console.log(id);
   const fetchPost = async () => {
     if (user) {
       const data = await get_post(user.access_token, id);
@@ -48,7 +47,7 @@ const OtherProfile = ({ id, closeFlag }) => {
         setExpire(true);
         setLoading(false);
       } else {
-        setUserPost([...data]);
+        setUserPost([...data.reverse()]);
         setLoading(false);
       }
     } else {
@@ -90,9 +89,9 @@ const OtherProfile = ({ id, closeFlag }) => {
             <div className="">
               <div className="flex mb-2 gap-10 items-center">
                 <img
-                  className="h-14 w-16 sm:w-30  sm:h-30 text-[#52c2eef0] cursor-pointer rounded-full border-2 border-amber-50"
+                  className="h-16 w-16 sm:w-30  sm:h-30 text-[#52c2eef0] cursor-pointer rounded-full border-2 border-amber-50"
                   src={otherUser.profile==""?"https://th.bing.com/th/id/OIP.hGSCbXlcOjL_9mmzerqAbQHaHa?w=192&h=192&c=7&r=0&o=7&dpr=1.6&pid=1.7&rm=3":otherUser.profile}
-                  onClick={() => setShowProfile(true)}
+                  onClick={() => setFlag(true)}
                 />
                 <div className="flex gap-6 sm:gap-10 ml-2 sm:ml-10">
                   <div>
@@ -150,7 +149,7 @@ const OtherProfile = ({ id, closeFlag }) => {
             <div className="absolute sm:left-140 left-20 top-50 sm:top-50 ">
               <img
                 src={`${otherUser.profile}`}
-                className="sm:left-20 shadow-2xl h-40 w-40  rounded-full sm:h-100 sm:w-100"
+                className="sm:left-20 shadow-2xl h-50 w-50 border-2 border-white  rounded-full sm:h-100 sm:w-100"
                 onClick={() => setFlag(false)}
                 style={{ boxShadow: "10px 20px 2px rgba(0,0,0,0.1)" }}
               />
