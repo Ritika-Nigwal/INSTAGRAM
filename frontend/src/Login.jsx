@@ -42,7 +42,7 @@ const Login = () => {
   }
 
   async function login(e) {
-    setLoading(true)
+    setLoading(true);
     e.preventDefault();
     const message = await AuthLogin(name, password, email, flag, navigate);
     console.log(message);
@@ -172,7 +172,11 @@ const Login = () => {
       {loading && (
         <div className="fixed inset-0 bg-[#121111ba] ">
           <div className="sm:mt-80 mt-75 ml-36 inline-block sm:ml-180 ">
-            <Spin size="large" tip="Loading..." style={{color:"skyblue"}} />
+            <Spin
+              size="large"
+              description="Loading..."
+              style={{ color: "skyblue" }}
+            />
           </div>
         </div>
       )}

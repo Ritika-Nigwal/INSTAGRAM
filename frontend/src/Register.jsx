@@ -109,15 +109,10 @@ const Register = () => {
         <ExpireModal />
       ) : (
         <div
-          style={{
-            backgroundImage:
-              'url("https://th.bing.com/th/id/OIP.zqGuGQNW-UYxaPqHqa7CsQHaEo?w=263&h=180&c=7&r=0&o=7&dpr=1.4&pid=1.7&rm=3")',
-            backgroundSize: "cover",
-            backgroundAttachment: "fixed",
-          }}
-          className=""
+        className="sm:bg-[url(https://th.bing.com/th/id/OIP.zqGuGQNW-UYxaPqHqa7CsQHaEo?w=263&h=180&c=7&r=0&o=7&dpr=1.4&pid=1.7&rm=3)] bg-cover "
+        
         >
-          <div className="h-40 p-2 items-center ml-4 w-76 sm:w-280 mt-10 flex justify-between bg-[linear-gradient(135deg,#52c2eef0,rgb(100,320,320),rgb(200,400,200))] sm:h-72 rounded-xl sm:p-10 ">
+          <div className="h-40 p-2 items-center  w-full sm:w-280 mt-10 flex justify-between bg-[linear-gradient(135deg,#52c2eef0,rgb(100,320,320),rgb(200,400,200))] sm:h-72 rounded-xl sm:p-10 ">
             <div className="">
               <div className="flex mb-2 gap-6 justify-between sm:gap-20 items-center">
                 <img
@@ -129,7 +124,7 @@ const Register = () => {
                   }
                   onClick={() => setShowProfile(true)}
                 />
-              
+
                 <div className="">
                   <button
                     className="text-[16px] mt-2 text-gray-800 bg-[#ffffff6a] px-1 rounded-m sm:text-2xl sm:mb-4  "
@@ -152,7 +147,6 @@ const Register = () => {
                     {userInfo.following}
                   </p>
                 </div>
-              
               </div>
               <div className="flex justify-between">
                 <div>
@@ -180,7 +174,7 @@ const Register = () => {
           <div className="ml-10 sm:my-10 sm:text-3xl font-medium font-[cursive] underline">
             All Posts
           </div>
-          <div className=" ml-4 flex flex-wrap justify-start">
+          <div className="flex  flex-wrap justify-start">
             {user_post.map((user) => (
               <UserPosts
                 key={user.id}
@@ -248,7 +242,11 @@ const Register = () => {
       {loading && (
         <div className="fixed inset-0 bg-[#121111ba] ">
           <div className="sm:mt-80 mt-75 ml-36 inline-block sm:ml-180 ">
-            <Spin size="large" tip="Loading..." style={{ color: "skyblue" }} />
+            <Spin
+              size="large"
+              description="Loading..."
+              style={{ color: "skyblue" }}
+            />
           </div>
         </div>
       )}

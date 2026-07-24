@@ -5,6 +5,7 @@ import { useOutletContext } from "react-router-dom";
 import ExpireModal from "./Modals/ExpireModal.jsx";
 import OtherProfile from "./OtherProfile.jsx";
 import { Spin } from "antd";
+import { useNavigate } from "react-router-dom";
 const Home = () => {
   const [posts, setPosts] = useState([]);
   const user = JSON.parse(localStorage.getItem("user"));
@@ -13,6 +14,12 @@ const Home = () => {
   const [flag, setFlag] = useState(false);
   const [Id, setId] = useState(null);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (!user) {
+      navigate("/login")
+    }
+  });
   const onClose = (f) => {
     setFlag(f);
   };
@@ -31,7 +38,7 @@ const Home = () => {
         setSessionExpire(true);
         setLoading(false);
       }
-      setPosts(getPosts.reverse());
+      setPosts([...getPosts]);
     } else {
       setSessionExpire(true);
       setLoading(false);
@@ -39,9 +46,9 @@ const Home = () => {
   }
   useEffect(() => {
     const call = async () => {
-    const data=await fetchPost();
+      const data = await fetchPost();
     };
-    call()
+    call();
   }, [refreshKey]);
   const urltype = (type, url) => {
     if (type === "relative") {
@@ -50,13 +57,14 @@ const Home = () => {
     return url;
   };
 
+  console.log(posts);
   return (
     <>
       <div
-        className="flex mr-0"
+        className=" mx-0 w-full flex sm:bg-[url(https://th.bing.com/th/id/OIP.zqGuGQNW-UYxaPqHqa7CsQHaEo?w=263&h=180&c=7&r=0&o=7&dpr=1.4&pid=1.7&rm=3)]"
         style={{
-          backgroundImage:
-            'url("https://th.bing.com/th/id/OIP.zqGuGQNW-UYxaPqHqa7CsQHaEo?w=263&h=180&c=7&r=0&o=7&dpr=1.4&pid=1.7&rm=3")',
+          // backgroundImage:
+          //   'url("https://th.bing.com/th/id/OIP.zqGuGQNW-UYxaPqHqa7CsQHaEo?w=263&h=180&c=7&r=0&o=7&dpr=1.4&pid=1.7&rm=3")',
           backgroundSize: "cover",
           backgroundAttachment: "fixed",
         }}
@@ -64,13 +72,14 @@ const Home = () => {
         {sessionExpire ? (
           <ExpireModal />
         ) : (
-          <span className="ml-0 mt-10 ">
+          <span className="my-10 ">
             {!flag || loading ? (
               posts.map((user) => (
                 <Posts
                   key={user.id}
                   name={user.user.username}
                   post={urltype(user.image_url_type, user.image_url)}
+                  caption={user.caption}
                   profile={
                     user.user.profile === ""
                       ? "https://th.bing.com/th/id/OIP.hGSCbXlcOjL_9mmzerqAbQHaHa?w=192&h=192&c=7&r=0&o=7&dpr=1.6&pid=1.7&rm=3"
@@ -94,7 +103,7 @@ const Home = () => {
       {loading && (
         <div className="fixed inset-0 bg-[#121111ba] ">
           <div className="sm:mt-80 mt-75 ml-36 inline-block sm:ml-180 ">
-            <Spin size="large" tip="Loading..." style={{ color: "skyblue" }} />
+            <Spin size="large" description="Loading..." style={{ color: "skyblue" }} />
           </div>
         </div>
       )}

@@ -17,7 +17,7 @@ const Sidebar = () => {
   const Logout = () => {
     localStorage.removeItem("user");
     setOpen(false);
-    navigate("/");
+    navigate("/login");
   };
 
   const handleNavClick = () => {
@@ -59,7 +59,7 @@ const Sidebar = () => {
         <ul className="mt-4 flex-1">
           <li>
             <NavLink
-              to="/home"
+              to="/"
               className={({ isActive }) =>
                 `flex flex-col items-center px-4 py-3 hover:bg-gray-100 transition-colors ${isActive ? "bg-gray-100" : ""}`
               }
@@ -71,7 +71,7 @@ const Sidebar = () => {
               </span>
             </NavLink>
           </li>
-        
+
           <li>
             <NavLink
               to="/register"
@@ -86,7 +86,7 @@ const Sidebar = () => {
               </span>
             </NavLink>
           </li>
-            <li>
+          <li>
             <NavLink
               to="/reels"
               className={({ isActive }) =>

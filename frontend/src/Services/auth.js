@@ -14,12 +14,12 @@ export async function AuthLogin(name, password, email, flag, navigate) {
         }),
       },
     );
-console.log(user_login)
+    console.log(user_login);
     if (user_login.ok) {
       const data = await user_login.json();
       localStorage.setItem("user", JSON.stringify(data));
-      navigate("/home");
-      toast.success("Loginned Successfully!!!",5);
+      navigate("/");
+      toast.success("Loginned Successfully!!!", 5);
       return data;
     } else {
       toast.error("Please Enter Valid credentials!!!", 5);
@@ -49,7 +49,7 @@ console.log(user_login)
     } else {
       toast.error("User already exist", 5);
     }
-   
+
     return data;
   }
   toast.error("Anyone of the field is empty...");

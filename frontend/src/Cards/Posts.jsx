@@ -7,7 +7,7 @@ import OtherProfile from "../OtherProfile";
 import ReactDOM from "react-dom";
 import { getPost } from "../Services/getPosts";
 import { Spin } from "antd";
-import { HeartFilled, HeartOutlined } from "@ant-design/icons";
+import { HeartFilled, HeartOutlined, MessageOutlined } from "@ant-design/icons";
 import DeleteModal from "../Modals/DeleteModal";
 import { LikePost, postLike, getLike } from "../Services/like.js";
 import { followUser } from "../Services/followers.js";
@@ -22,16 +22,17 @@ const Posts = (props) => {
   const [commentToDelete, setCommentToDelete] = useState(null);
   const [likeState, setLike] = useState(true);
   const [totalLikes, setTotalLikes] = useState(props.likes);
+  const [showComment, setShowComment] = useState(false);
   const follow = async () => {
-    setLoading(true)
+    setLoading(true);
     const response = await followUser(user.user_id, props.id);
-    if(response){
-      setLoading(false)
+    if (response) {
+      setLoading(false);
     }
-    const detail=await response.json()
-    console.log(detail)
+    const detail = await response.json();
+    console.log(detail);
     if (detail.detail == 403) {
-      message.error(`you already followed ${props.name}`,4);
+      message.error(`you already followed ${props.name}`, 4);
     } else {
       message.success(`you followed ${props.name}`, 4);
     }
@@ -84,7 +85,7 @@ const Posts = (props) => {
     setCommentToDelete(null);
   };
   const createComment = async (e) => {
-    setLoading(true)
+    setLoading(true);
     const postComment = await fetch(
       `${import.meta.env.VITE_API_URL}/comments/`,
       {
@@ -96,23 +97,24 @@ const Posts = (props) => {
         body: JSON.stringify({ text: comment, post_id: props.id }),
       },
     );
-    setLoading(false)
+    setLoading(false);
     const data = await postComment.json();
     setCommentList((prev) => [...prev, data]);
     setComment("");
   };
   return (
     <>
-      <span className="flex flex-col  ml-2 sm:m-20 sm:my-10 sm:justify-evenly">
-        <span className="flex h-20 gap-4 sm:gap-10 w-75 bg-[#f7f6f6] border-t-4 border-t-gray-300  sm:w-130">
-          <img
-            src={props.profile}
-            className="sm:h-16 h-16 w-16 cursor-pointer  sm:w-16  rounded-full my-1"
-            onClick={() => setFlag(true)}
-          />
-          <div className="flex flex-wrap justify-around gap-6">
+      <span className="flex flex-col  sm:m-20 sm:my-10 sm:justify-evenly">
+        <div className="relative">
+          <span className="absolute justify-around sm:border-x-2 sm:border-x-white bg-[#5e5c5c52] w-full flex text-white  sm:w-120">
+            <img
+              src={props.profile}
+              className="sm:h-16 h-16 w-16 z-10 border-2 border-white cursor-pointer  sm:w-16  rounded-full my-1"
+              onClick={() => setFlag(true)}
+            />
+
             <h1
-              className="pt-5 cursor-pointer font-serif text-[16px] gradientText sm:text-2xl whitespace-nowrap "
+              className="pt-5 cursor-pointer font-semibold shadow-2xl font-serif text-[14px] text-white sm:text-xl whitespace-nowrap "
               onClick={() => {
                 props.onClose(true);
 
@@ -121,67 +123,80 @@ const Posts = (props) => {
             >
               User : {props.name}
             </h1>
-
             <button
               onClick={follow}
-              className="w-15 text-[12px]  ml-2 h-6 mt-4 sm:ml-10 sm:w-25 sm:text-xl sm:mt-4 sm:px-2 sm:h-10 rounded-xl bg-[#8cbdef55]"
-              style={{
-                border: "3px solid",
-                borderImage: "linear-gradient(to right,#faf,#baf) 1",
-              }}
+              className=" h-8 mt-4 px-1 bg-[#ffffff79] hover:bg-amber-400 text-black border-2 border-white font-medium rounded "
             >
               +Follow
             </button>
-          </div>
-        </span>
-        <img
-          src={props.post}
-          className="h-120 w-75 cursor-pointer sm:h-150 sm:w-130 sm:p-1 bg-blue-100 "
-        />
-        <span onClick={doLike}>
-          {!likeState ? (
-            <HeartOutlined
-              style={{ fontSize: "35px", height: "40px" }}
-              className="hover:animate-bounce "
-            />
-          ) : (
-            <HeartFilled
-              style={{ color: "red", fontSize: "35px", height: "40px" }}
-              className="hover:animate-bounce"
-            />
-          )}
-          <p className="font-semibold text-xl">{totalLikes} Likes💗</p>
-        </span>
-        <p className="sm:text-2xl font-serif text-purple-950">Comments</p>
-        <div className="bg-gray-300 h-15 my-1 rounded-xl sm:h-25 sm:rounded-3xl flex flex-col gap-2 overflow-auto align-middle">
-          {commentList.map((comment) => (
-            <div key={comment.id}>
-              <p className="text-cyan-900 flex justify-between sm:p-2 px-1  my-1 mx-2 rounded-b-2xl bg-green-400">
-                {comment.text}
-                <button
-                  onClick={() => {
-                    setCommentToDelete(comment.id);
-                    setShowDeleteModal(true);
-                  }}
-                >
-                  <img src={Image3} className="h-6 m-1 cursor-pointer"></img>
-                </button>
-              </p>
-            </div>
-          ))}
+          </span>
+          <img
+            src={props.post}
+            className="h-130 w-full cursor-pointer sm:h-170 sm:w-120 sm:p-1 bg-blue-100 "
+          />
         </div>
-        <input
-          value={comment}
-          onChange={(e) => setComment(e.target.value)}
-          placeholder="add comment..."
-          className="my-1 outline-none p-2 sm:rounded-2xl rounded-xl bg-gray-100"
-        />
-        <button
-          onClick={createComment}
-          className="bg-green-400 cursor-pointer w-16 mb-16 text-center sm:py-1 sm:px-3 rounded"
-        >
-          send
-        </button>
+          <em className="font-sans font-bold w-full  bg-white">  {props.caption}</em>
+        <div className="flex pt-2 mb-4 bg-[#ffffffe0] sm:bg-white sm:rounded-b-2xl sm:mb-2">
+   
+          <span onClick={doLike}>
+            {!likeState ? (
+              <HeartOutlined
+                style={{ fontSize: "30px", height: "40px" }}
+                className="hover:animate-bounce "
+              />
+            ) : (
+              <HeartFilled
+                style={{ color: "red", fontSize: "30px", height: "40px" }}
+                className="hover:animate-bounce"
+              />
+            )}
+            <p className=" ">{totalLikes} Likes💗</p>
+          </span>
+          <span onClick={() => setShowComment(!showComment)} className="mt-1 ml-8">
+            <MessageOutlined className="text-2xl " />
+            <p className="ml-2">{commentList.length}</p>
+          </span>
+         
+        </div>
+        
+        {showComment && (
+          <div>
+            {" "}
+            <p className="sm:text-2xl font-serif text-purple-950">Comments</p>
+            <div className="bg-[#4a484832] h-25 my-2 p-2 rounded-xl sm:h-30 sm:rounded-3xl flex flex-col gap-2 overflow-auto align-middle">
+              {commentList.map((comment) => (
+                <div key={comment.id}>
+                  <p className=" flex justify-between sm:p-1 border-b-2 px-1  my-1 mx-2 rounded-b-2xl bg-white">
+                    {comment.text}
+                    <button
+                      onClick={() => {
+                        setCommentToDelete(comment.id);
+                        setShowDeleteModal(true);
+                      }}
+                    >
+                      <img
+                        src={Image3}
+                        className="h-6 m-1 cursor-pointer"
+                      ></img>
+                    </button>
+                  </p>
+                </div>
+              ))}
+            </div>
+            <input
+              value={comment}
+              onChange={(e) => setComment(e.target.value)}
+              placeholder="add comment..."
+              className="my-1 outline-none w-full p-2 sm:rounded-2xl rounded-xl bg-gray-100"
+            />
+            <button
+              onClick={createComment}
+              className="bg-green-400 cursor-pointer w-16 mb-16 text-center sm:py-1 sm:px-3 rounded"
+            >
+              send
+            </button>
+          </div>
+        )}
 
         {showDeleteModal &&
           ReactDOM.createPortal(
@@ -209,7 +224,11 @@ const Posts = (props) => {
       {loading && (
         <div className="fixed inset-0 bg-[#121111ba] ">
           <div className="sm:mt-80 mt-75 ml-36 inline-block sm:ml-180 ">
-            <Spin size="large" tip="Loading..." style={{ color: "skyblue" }} />
+            <Spin
+              size="large"
+              description="Loading..."
+              style={{ color: "skyblue" }}
+            />
           </div>
         </div>
       )}

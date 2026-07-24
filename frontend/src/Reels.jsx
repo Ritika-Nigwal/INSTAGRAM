@@ -5,8 +5,8 @@ import Reel4 from "./ReelFolder/Reel4.mp4";
 import Reel5 from "./ReelFolder/Reel5.mp4";
 import Reel6 from "./ReelFolder/Reel6.mp4";
 import { Spin } from "antd";
-import { useEffect, useRef,useState } from "react";
-import Follow from "./Cards/Follow.jsx"
+import { useEffect, useRef, useState } from "react";
+import Follow from "./Cards/Follow.jsx";
 const reels = [Reel1, Reel2, Reel3, Reel4, Reel5, Reel6];
 
 const Reels = () => {
@@ -28,7 +28,7 @@ const Reels = () => {
     );
 
     videoRefs.current.forEach((video) => {
-      setLoading(false)
+      setLoading(false);
       if (video) observer.observe(video);
     });
 
@@ -62,11 +62,15 @@ const Reels = () => {
           </div>
         ))}
       </div>
-    
+
       {loading && (
         <div className="fixed inset-0 bg-[#121111ba] ">
           <div className="sm:mt-80 mt-75 ml-36 inline-block sm:ml-180 ">
-            <Spin size="large" tip="Loading..." style={{ color: "skyblue" }} />
+            <Spin
+              size="large"
+              description="Loading..."
+              style={{ color: "skyblue" }}
+            />
           </div>
         </div>
       )}
